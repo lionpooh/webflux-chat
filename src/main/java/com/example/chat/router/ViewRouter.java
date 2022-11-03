@@ -3,6 +3,7 @@ package com.example.chat.router;
 import com.example.chat.handler.IndexHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -17,8 +18,14 @@ public class ViewRouter {
     @Bean
     public RouterFunction<ServerResponse> indexRouter(IndexHandler indexHandler) {
         return RouterFunctions
-                .route(GET("/index").or(GET("/index.html").and(accept(MediaType.TEXT_HTML))),
+                .route(GET("/").or(GET("/index")).or(GET("/index.html").and(accept(MediaType.TEXT_HTML))),
                 indexHandler::index);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> jsRouter() {
+        return RouterFunctions
+                .resources("/js/**", new ClassPathResource("js/"));
     }
 
 }
